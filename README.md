@@ -1,2 +1,1 @@
-# pvso
-1 zadanko
+# PVSO
