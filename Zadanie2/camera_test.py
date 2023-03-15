@@ -32,34 +32,43 @@ img = xiapi.Image()
 print('Starting data acquisition...')
 cam.start_acquisition()
 stop = False
+x = 1
 while stop == False:
 
     cam.get_image(img)
     image = img.get_image_data_numpy()
     image = cv2.resize(image, (480, 480))
-    gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-    gray = cv.medianBlur(gray, 5)
-    rows = gray.shape[0]
-    circles = cv.HoughCircles(gray, cv.HOUGH_GRADIENT, 1, rows / 8, param1=29, param2=68, minRadius=0, maxRadius=0)
-    if circles is not None:
-        circles = np.uint16(np.around(circles))
-        for i in circles[0, :]:
-            center = (i[0], i[1])
-            # circle center
-            cv.circle(image, center, 1, (0, 100, 100), 3)
-            # circle outline
-            radius = i[2]
-            cv.circle(image, center, radius, (255, 0, 255), 3)
-    cv.imshow("detected circles", image)
-    cv.waitKey(2)
-
-
-
-
+    cv2.imshow("test", image)
+    cv2.waitKey(2)
     if cv2.waitKey(33) == ord('a'):
-       stop = True
+        name = str(x)
+        cv2.imwrite(name + ".jpg", image)
+        x = x + 1
 
 
+
+
+
+# for i in range(10):
+#     #get data and pass them from camera to img
+#     cam.get_image(img)
+#     image = img.get_image_data_numpy()
+#     cv2.imshow("test", image)
+#     cv2.waitKey()
+#     #get raw data from camera
+#     #for Python2.x function returns string
+#     #for Python3.x function returns bytes
+#     data_raw = img.get_image_data_raw()
+#
+#     #transform data to list
+#     data = list(data_raw)
+#
+#     #print image data and metadata
+#     print('Image number: ' + str(i))
+#     print('Image width (pixels):  ' + str(img.width))
+#     print('Image height (pixels): ' + str(img.height))
+#     print('First 10 pixels: ' + str(data[:10]))
+#     print('\n')
 
 #stop data acquisition
 print('Stopping acquisition...')
